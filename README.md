@@ -5,5 +5,11 @@ Follows this [blog](https://os.phil-opp.com/vga-text-mode/)
 ## To run
 
 ```
-cargo build
+cargo run
+```
+
+## To test
+
+```
+cargo test
 ```
