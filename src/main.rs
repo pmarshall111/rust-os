@@ -18,6 +18,14 @@ pub extern "C" fn _start() -> ! {
     // invoke a breakpoint exception
     x86_64::instructions::interrupts::int3(); // new
 
+    // Invoke a page fault exception which will cause a double fault due to there
+    // being no page fault handler set in GDT
+    #[cfg(not(test))]
+    unsafe {
+        let bad_addr_ptr: *mut u8 = 0xdeadbeef as *mut _;
+        *bad_addr_ptr = 42;
+    }
+
     println!("hi\n\nWhatz up dawg");
 
     #[cfg(test)]
