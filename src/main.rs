@@ -20,18 +20,19 @@ pub extern "C" fn _start() -> ! {
 
     // Invoke a page fault exception which will cause a double fault due to there
     // being no page fault handler set in GDT
-    #[cfg(not(test))]
-    unsafe {
-        let bad_addr_ptr: *mut u8 = 0xdeadbeef as *mut _;
-        *bad_addr_ptr = 42;
-    }
+    // Double faults will stop execution, so let's comment this out.
+    // #[cfg(not(test))]
+    // unsafe {
+    //     let bad_addr_ptr: *mut u8 = 0xdeadbeef as *mut _;
+    //     *bad_addr_ptr = 42;
+    // }
 
     println!("hi\n\nWhatz up dawg");
 
     #[cfg(test)]
     test_main();
 
-    loop {}
+    rust_os::hlt_loop();
 }
 
 
@@ -39,7 +40,7 @@ pub extern "C" fn _start() -> ! {
 #[panic_handler]
 fn panic(info: &PanicInfo) -> ! {
     println!("{}", info);
-    loop {}
+    rust_os::hlt_loop();
 }
 
 #[cfg(test)]
